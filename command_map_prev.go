@@ -2,12 +2,10 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/vidyasagar0405/pokedexcli/internals/pokeapi"
 )
 
-func callbackMap(cfg *config) error {
-	err := Map(cfg)
+func callbackMapPrev(cfg *config) error {
+	err := MapPrev(cfg)
 	if err != nil {
 		return err
 	}
@@ -15,13 +13,13 @@ func callbackMap(cfg *config) error {
 	return nil
 }
 
-func Map(cfg *config) error {
-	url := pokeapi.BaseURL + "/location-area"
-
-	// Use next URL if available
-	if cfg.nextLocationUrl != nil {
-		url = *cfg.nextLocationUrl
+func MapPrev(cfg *config) error {
+	if cfg.prevLocationUrl == nil {
+		fmt.Println("You're on the first page!")
+		return nil
 	}
+
+	url := *cfg.prevLocationUrl
 
 	resp, err := cfg.pokeapiClient.ListLocationAreas(url)
 	if err != nil {

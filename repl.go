@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func startRepl() {
+func startRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("pokedex > ")
@@ -29,7 +29,7 @@ func startRepl() {
 		if !ok {
 			fmt.Println("Invalid command")
 		} else {
-            command.callback()
+            command.callback(cfg)
 		}
 
 

@@ -7,12 +7,9 @@ import (
     "net/http"
 )
 
-func (c *Client) ListLocationAreas() (locationAreasResp, error) {
-    offset := fmt.Sprintf("?offset=%d&limit=%d", c.mapCount*20, c.mapCount*20)
-    endpoint := "/location-area"+offset
-    fullUrl := baseURL + endpoint
+func (c *Client) ListLocationAreas(url string) (locationAreasResp, error) {
 
-    req, err := http.NewRequest("GET", fullUrl, nil)
+    req, err := http.NewRequest("GET", url, nil)
     if err != nil {
         return locationAreasResp{}, err
     }
@@ -36,8 +33,6 @@ func (c *Client) ListLocationAreas() (locationAreasResp, error) {
     if err != nil {
         return locationAreasResp{}, err
     }
-
-    c.mapCount++
 
     return location_areas_resp, nil
 }
