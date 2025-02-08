@@ -9,6 +9,7 @@ const baseURL = "https://pokeapi.co/api/v2"
 
 type Client struct {
 	httpClient http.Client
+    mapCount int
 }
 
 func NewClient() Client {
@@ -16,5 +17,6 @@ func NewClient() Client {
 		httpClient: http.Client{
 			Timeout: time.Minute,
 		},
+        mapCount: 0,
 	}
 }

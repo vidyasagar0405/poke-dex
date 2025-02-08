@@ -28,9 +28,10 @@ func startRepl() {
 
 		if !ok {
 			fmt.Println("Invalid command")
+		} else {
+            command.callback()
 		}
 
-		command.callback()
 
 	}
 }

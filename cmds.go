@@ -19,7 +19,7 @@ func getCommands() map[string]clicommand {
 			callback:    callbackExit,
 		},
 		"map": {
-			name:        "exit",
+			name:        "map",
 			description: "lists available location area",
 			callback:    callbackMap,
 		},
