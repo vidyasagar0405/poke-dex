@@ -9,9 +9,11 @@ import (
 	"time"
 )
 
+const timeout = 10 * time.Second
+const cacheTimeout = 5 * time.Minute
+
 func TestNewClient(t *testing.T) {
-	timeout := 10 * time.Second
-	client := NewClient(timeout)
+	client := NewClient(timeout, cacheTimeout)
 
 	if client.httpClient.Timeout != timeout {
 		t.Errorf("Expected timeout to be %v, got %v", timeout, client.httpClient.Timeout)
@@ -19,7 +21,7 @@ func TestNewClient(t *testing.T) {
 
 	// Since Cache is a value type, we can't check if it's nil
 	// Instead, we can check if it's initialized by checking internal state
-	if reflect.ValueOf(client.Cache).IsZero() {
+	if reflect.ValueOf(client.cache).IsZero() {
 		t.Error("Expected cache to be initialized")
 	}
 }
@@ -52,7 +54,7 @@ func TestListLocationAreas_Success(t *testing.T) {
 	defer mockServer.Close()
 
 	// Create a client
-	client := NewClient(10 * time.Second)
+	client := NewClient(timeout, cacheTimeout)
 
 	// Call the method
 	resp, err := client.ListLocationAreas(mockServer.URL)
@@ -87,7 +89,7 @@ func TestListLocationAreas_BadStatusCode(t *testing.T) {
 	defer mockServer.Close()
 
 	// Create a client
-	client := NewClient(10 * time.Second)
+	client := NewClient(timeout, cacheTimeout)
 
 	// Call the method
 	_, err := client.ListLocationAreas(mockServer.URL)
@@ -107,7 +109,7 @@ func TestListLocationAreas_InvalidJSON(t *testing.T) {
 	defer mockServer.Close()
 
 	// Create a client
-	client := NewClient(10 * time.Second)
+	client := NewClient(timeout, cacheTimeout)
 
 	// Call the method
 	_, err := client.ListLocationAreas(mockServer.URL)
@@ -126,7 +128,7 @@ func TestListLocationAreas_ServerError(t *testing.T) {
 	defer mockServer.Close()
 
 	// Create a client
-	client := NewClient(10 * time.Second)
+	client := NewClient(timeout, cacheTimeout)
 
 	// Call the method
 	_, err := client.ListLocationAreas(mockServer.URL)
@@ -159,35 +161,35 @@ func TestListLocationAreas_CacheStorage(t *testing.T) {
 	defer mockServer.Close()
 
 	// Create a client with a longer cache duration for testing
-	client := NewClient(10 * time.Second)
-	
+	client := NewClient(timeout, cacheTimeout)
+
 	// Make a request
 	_, err := client.ListLocationAreas(mockServer.URL)
 	if err != nil {
 		t.Fatalf("Expected no error on request, got %v", err)
 	}
-	
+
 	// Check that the cache contains the data
-	cachedData, exists := client.Cache.Get(mockServer.URL)
+	cachedData, exists := client.cache.Get(mockServer.URL)
 	if !exists {
 		t.Error("Expected data to be in the cache, but it wasn't found")
 	}
 	if cachedData == nil {
 		t.Error("Expected cached data to not be nil")
 	}
-	
+
 	// Verify we can decode the cached data
 	var result locationAreasResp
 	err = json.Unmarshal(cachedData, &result)
 	if err != nil {
 		t.Fatalf("Failed to unmarshal cached data: %v", err)
 	}
-	
+
 	// Verify the cached data matches our expected response
 	if result.Count != mockResp.Count {
 		t.Errorf("Expected cached Count to be %d, got %d", mockResp.Count, result.Count)
 	}
-	
+
 	if !reflect.DeepEqual(result.Results, mockResp.Results) {
 		t.Errorf("Expected cached Results to match original response")
 	}
