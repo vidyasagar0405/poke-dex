@@ -1,10 +1,10 @@
 package pokeapi
 
 import (
-    "encoding/json"
-    "fmt"
-    "io"
-    "net/http"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
 )
 
 func (c *Client) ListLocationAreas(url string) (locationAreasResp, error) {
@@ -33,6 +33,8 @@ func (c *Client) ListLocationAreas(url string) (locationAreasResp, error) {
     if err != nil {
         return locationAreasResp{}, err
     }
+
+    c.Cache.Add(url, data)
 
     return location_areas_resp, nil
 }
