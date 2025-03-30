@@ -1,7 +1,7 @@
 package main
 
 type clicommand struct {
-	callback    func(cfg *config) error
+	callback    func(cfg *config, arg string) error
 	name        string
 	description string
 }
@@ -27,6 +27,11 @@ func getCommands() map[string]clicommand {
 			name:        "mapb",
 			description: "lists previous page of location area",
 			callback:    callbackMapPrev,
+		},
+		"explore": {
+			name:        "explore",
+			description: "lists previous page of location area",
+			callback:    callbackExplore,
 		},
 	}
 }

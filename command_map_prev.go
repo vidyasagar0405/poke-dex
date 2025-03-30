@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func callbackMapPrev(cfg *config) error {
+func callbackMapPrev(cfg *config, _ string) error {
 	err := MapPrev(cfg)
 	if err != nil {
 		return err
