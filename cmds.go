@@ -23,8 +23,8 @@ func getCommands() map[string]clicommand {
 			description: "lists available location area, type again to see the next page",
 			callback:    callbackMap,
 		},
-		"map-prev": {
-			name:        "map-prev",
+		"mapb": {
+			name:        "mapb",
 			description: "lists previous page of location area",
 			callback:    callbackMapPrev,
 		},
