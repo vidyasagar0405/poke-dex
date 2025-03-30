@@ -6,7 +6,7 @@ import (
 	"github.com/vidyasagar0405/pokedexcli/internals/pokeapi"
 )
 
-func callbackMap(cfg *config, _ string) error {
+func callbackMap(cfg *config, args ...string) error {
 	err := Map(cfg)
 	if err != nil {
 		return err

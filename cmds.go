@@ -1,7 +1,7 @@
 package main
 
 type clicommand struct {
-	callback    func(cfg *config, arg string) error
+	callback    func(cfg *config, arg ...string) error
 	name        string
 	description string
 }

@@ -1,10 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
-func callbackExplore(cfg *config, locArea string) error {
+func callbackExplore(cfg *config, args ...string) error {
 
-	exporeResp, err := cfg.pokeapiClient.ExploreLocationArea(locArea)
+	if len(args) != 1 {
+		return errors.New("you must provide a location name")
+	}
+
+	exporeResp, err := cfg.pokeapiClient.ExploreLocationArea(args[0])
 	if err != nil {
 		return err
 	}

@@ -22,9 +22,9 @@ func startRepl(cfg *config) {
 		}
 
 		commandName := cleaned_input[0]
-        args := ""
+        args := []string{}
 		if len(cleaned_input) > 1 {
-            args = cleaned_input[1]
+            args = cleaned_input[1:]
 		}
 
 		available_command := getCommands()
@@ -33,7 +33,10 @@ func startRepl(cfg *config) {
 		if !ok {
 			fmt.Println("Invalid command")
 		} else {
-			command.callback(cfg, args)
+            err := command.callback(cfg, args...)
+            if err != nil {
+                fmt.Println(err)
+            }
 		}
 
 	}
