@@ -24,7 +24,7 @@ func (c *Client) ExploreLocationArea(locArea string) (locationExploreResp, error
 		return locationExploreResp{}, err
 	}
 
-    fmt.Println("Exploring pastoria-city-area...")
+    fmt.Printf("Exploring %s...\n", locArea)
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return locationExploreResp{}, err
