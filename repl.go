@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/vidyasagar0405/pokedexcli/cmds"
+	"github.com/vidyasagar0405/pokedexcli/config"
 )
 
-func startRepl(cfg *config) {
+func startRepl(cfg *config.Config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("pokedex > ")
@@ -27,13 +30,13 @@ func startRepl(cfg *config) {
             args = cleaned_input[1:]
 		}
 
-		available_command := getCommands()
+		available_command := cmds.GetCommands()
 		command, ok := available_command[commandName]
 
 		if !ok {
 			fmt.Println("Invalid command")
 		} else {
-            err := command.callback(cfg, args...)
+            err := command.Callback(cfg, args...)
             if err != nil {
                 fmt.Println(err)
             }

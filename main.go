@@ -4,21 +4,15 @@ import (
 	"time"
 
 	"github.com/vidyasagar0405/pokedexcli/internals/pokeapi"
+	"github.com/vidyasagar0405/pokedexcli/config"
 )
-
-type config struct {
-	pokeapiClient   pokeapi.Client
-	nextLocationUrl *string
-	prevLocationUrl *string
-	caughtPokemon   map[string]pokeapi.Pokemon
-}
 
 func main() {
 
-	cfg := config{
-		caughtPokemon: map[string]pokeapi.Pokemon{},
-		pokeapiClient: pokeapi.NewClient(5*time.Second, 5*time.Minute),
+	cfg := &config.Config{
+		CaughtPokemon: map[string]pokeapi.Pokemon{},
+		PokeapiClient: pokeapi.NewClient(5*time.Second, 5*time.Minute),
 	}
 
-	startRepl(&cfg)
+	startRepl(cfg)
 }
